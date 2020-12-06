@@ -1,2 +1,7 @@
-package gamepad.physics2D.rigidbody;public class IntersectionDetector2D {
+package gamepad.physics2D.rigidbody;
+
+public class IntersectionDetector2D {
+
+    
+
 }
