@@ -97,6 +97,7 @@ public class IntersectionDetector2D {
     // ==========================================
     // Line vs. Primitive Tests
     // ==========================================
+
     /**
      * Returns if a line is intersecting a circle
      *
@@ -125,5 +126,55 @@ public class IntersectionDetector2D {
         Vector2f closestPoint = new Vector2f(line.getStart()).add(ab.mul(t));
 
         return pointInCircle(closestPoint, circle);
+    }
+
+    /**
+     * Returns if a line is intersecting an AABB Box
+     *
+     * @param line the line to be checked
+     * @param box  the box to be checked
+     * @return the boolean whether or not it is intersecting
+     */
+    public static boolean lineAndAABB(Line2D line, AABB box) {
+        if(pointInAABB(line.getStart(), box) || pointInAABB(line.getEnd(), box)) return true;
+
+        Vector2f unitVector = new Vector2f(line.getEnd()).sub(line.getStart());
+        unitVector.normalize();
+        unitVector.x = (unitVector.x != 0) ? 1.0f / unitVector.x : 0f;
+        unitVector.y = (unitVector.y != 0) ? 1.0f / unitVector.y : 0f;
+
+        Vector2f min = box.getMin();
+        min.sub(line.getStart()).mul(unitVector);
+
+        Vector2f max = box.getMax();
+        max.sub(line.getStart()).mul(unitVector);
+
+        float tMin = Math.max(Math.min(min.x, max.y), Math.min(min.y, max.y));
+        float tMax = Math.min(Math.max(min.x, max.x), Math.max(min.y, max.y));
+        if(tMax < 0 || tMin > tMax) return false;
+
+        float t = (tMin < 0f) ? tMax : tMin;
+        return t > 0f && t * t < line.lengthSquared();
+    }
+
+    /**
+     * Return is a line is intersecting with a Box2D.
+     *
+     * @param line the line to be checked
+     * @param box  the box to be checked
+     * @return the boolean whether or not it is intersecting
+     */
+    public static boolean lineAndBox2D(Line2D line, Box2D box) {
+        float theta = -box.getRigidbody2D().getRotation();
+        Vector2f center = box.getRigidbody2D().getPosition();
+        Vector2f localStart = new Vector2f(line.getStart());
+        Vector2f localEnd = new Vector2f(line.getEnd());
+        PhysicsMath.rotate(localStart, theta, center);
+        PhysicsMath.rotate(localEnd, theta, center);
+
+        Line2D localLine = new Line2D(localStart, localEnd);
+        AABB aabb = new AABB(box.getMin(), box.getMax());
+
+        return lineAndAABB(localLine, aabb);
     }
 }
