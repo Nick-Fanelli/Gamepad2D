@@ -12,14 +12,15 @@ import org.joml.Vector2f;
  * any Physics2D objects.
  *
  * @author Nick Fanelli
- * @since 6-Dec-2020
  * @version 1.0
+ * @since 6 -Dec-2020
  */
 public class IntersectionDetector2D {
 
     // ==========================================
     // Point vs. Primitive Test
     // ==========================================
+
     /**
      * Returns if a point is intersecting a line.
      *
@@ -28,14 +29,20 @@ public class IntersectionDetector2D {
      * @return the boolean whether or not it intersects
      */
     public static boolean pointOnLine(Vector2f point, Line2D line) {
-        float dy = line.getEnd().y = line.getStart().y;
-        float dx = line.getEnd().x = line.getStart().x;
-        float slope = dy / dx;
+        float dy = line.getEnd().y - line.getStart().y;
+        float dx = line.getEnd().x - line.getStart().x;
 
-        float yIntercept = line.getEnd().y - (slope * line.getEnd().x);
+        // Catch vertical lines
+        if (dx == 0f) {
+            return PhysicsMath.compare(point.x, line.getStart().x);
+        }
+
+        float m = dy / dx;
+
+        float b = line.getEnd().y - (m * line.getEnd().x);
 
         // Check the line equation
-        return point.y == (slope * point.x + yIntercept);
+        return point.y == m * point.x + b;
     }
 
     /**
@@ -47,7 +54,7 @@ public class IntersectionDetector2D {
      */
     public static boolean pointInCircle(Vector2f point, Circle circle) {
         Vector2f circleCenter = circle.getCenter();
-        Vector2f centerToPoint = new Vector2f(point.sub(circleCenter));
+        Vector2f centerToPoint = new Vector2f(point).sub(circleCenter);
 
         return centerToPoint.lengthSquared() <= circle.getRadius() * circle.getRadius();
     }
@@ -90,5 +97,33 @@ public class IntersectionDetector2D {
     // ==========================================
     // Line vs. Primitive Tests
     // ==========================================
+    /**
+     * Returns if a line is intersecting a circle
+     *
+     * @param line   the line to be checked
+     * @param circle the circle to be checked
+     * @return the boolean whether or not it intersects
+     */
+    public static boolean lineAndCircle(Line2D line, Circle circle) {
+        if (pointInCircle(line.getStart(), circle) || pointInCircle(line.getEnd(), circle)) {
+            return true;
+        }
 
+        Vector2f ab = new Vector2f(line.getEnd()).sub(line.getStart());
+
+        // Project point (circle position) onto ab (line segment)
+        // parameterized position t
+        Vector2f circleCenter = circle.getCenter();
+        Vector2f centerToLineStart = new Vector2f(circleCenter).sub(line.getStart());
+        float t = centerToLineStart.dot(ab) / ab.dot(ab);
+
+        if (t < 0.0f || t > 1.0f) {
+            return false;
+        }
+
+        // Find the closest point to the line segment
+        Vector2f closestPoint = new Vector2f(line.getStart()).add(ab.mul(t));
+
+        return pointInCircle(closestPoint, circle);
+    }
 }
