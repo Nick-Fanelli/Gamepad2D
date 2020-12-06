@@ -126,7 +126,6 @@ public class DebugDraw {
     // =======================================================
     // Add Box2D Methods
     // =======================================================
-    // Start on the physics engine tutorial
     public static void addBox2D(Vector2f center, Vector2f dimensions, float rotation, Vector3f color, int lifeCycle) {
         Vector2f min = new Vector2f((center).sub(new Vector2f(dimensions).div(2f)));
         Vector2f max = new Vector2f((center).add(new Vector2f(dimensions).div(2f)));
