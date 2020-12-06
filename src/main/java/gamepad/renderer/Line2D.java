@@ -10,6 +10,11 @@ public class Line2D {
     private Vector3f color;
     private int lifeTime;
 
+    public Line2D(Vector2f start, Vector2f end) {
+        this.start = start;
+        this.end = end;
+    }
+
     public Line2D(Vector2f start, Vector2f end, Vector3f color, int lifeTime) {
         this.start = start;
         this.end = end;
@@ -25,11 +30,9 @@ public class Line2D {
     public Vector2f getStart() {
         return start;
     }
-
     public Vector2f getEnd() {
         return end;
     }
-
     public Vector3f getColor() {
         return color;
     }
