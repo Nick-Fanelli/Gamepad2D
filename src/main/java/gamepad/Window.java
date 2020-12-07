@@ -24,6 +24,8 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 
 public class Window {
 
+    // #30 GE
+
     public final boolean isWindows;
 
     private static Window window = null;
