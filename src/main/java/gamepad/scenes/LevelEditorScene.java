@@ -3,7 +3,11 @@ package gamepad.scenes;
 import gamepad.Camera;
 import gamepad.Prefabs;
 import gamepad.object.GameObject;
-import gamepad.object.components.*;
+import gamepad.object.components.MouseControls;
+import gamepad.object.components.Sprite;
+import gamepad.object.components.Spritesheet;
+import gamepad.physics2D.PhysicsSystem2D;
+import gamepad.physics2D.rigidbody.Rigidbody2D;
 import gamepad.renderer.DebugDraw;
 import gamepad.utils.AssetPool;
 import gamepad.utils.Transform;
@@ -11,19 +15,31 @@ import imgui.ImGui;
 import imgui.ImVec2;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
-import org.joml.Vector4f;
 
 public class LevelEditorScene extends Scene {
 
     private Spritesheet sprites;
-//    private GameObject obj1;
-
     public GameObject levelEditorComponents = new GameObject("Level Editor", new Transform(new Vector2f()), 0);
+    public PhysicsSystem2D physics = new PhysicsSystem2D(1.0f / 60.0f, new Vector2f(0, -10));
+    public Transform obj1, obj2;
+    public Rigidbody2D rb1, rb2;
 
     @Override
     public void init() {
         levelEditorComponents.addComponent(new MouseControls());
-        levelEditorComponents.addComponent(new GridLines());
+//        levelEditorComponents.addComponent(new GridLines());
+
+        obj1 = new Transform(new Vector2f(100, 500));
+        obj2 = new Transform(new Vector2f(200, 500));
+        rb1 = new Rigidbody2D();
+        rb2 = new Rigidbody2D();
+        rb1.setRawTransform(obj1);
+        rb2.setRawTransform(obj2);
+        rb1.setMass(100.0f);
+        rb2.setMass(200.0f);
+
+        physics.addRigidbody(rb1);
+        physics.addRigidbody(rb2);
 
         loadResources();
 
@@ -35,13 +51,6 @@ public class LevelEditorScene extends Scene {
 //            this.activeGameObject = gameObjects.get(0);
             return;
         }
-//
-//        obj1 = new GameObject("Object 1", new Transform(new Vector2f(200, 100), new Vector2f(256, 256)), 2);
-//        SpriteRenderer obj1SpriteRenderer = new SpriteRenderer();
-//        obj1SpriteRenderer.setColor(new Vector4f(1, 0, 0, 1));
-//        obj1.addComponent(obj1SpriteRenderer);
-//        obj1.addComponent(new Rigidbody());
-//        this.addGameObjectToScene(obj1);
     }
 
     private void loadResources() {
@@ -52,20 +61,18 @@ public class LevelEditorScene extends Scene {
                         81, 0));
     }
 
-    float x = 0;
-    float y = 0;
 
     @Override
     public void update(float deltaTime) {
         levelEditorComponents.update(deltaTime);
 
-        DebugDraw.addCircle(new Vector2f(x, y), 64, new Vector3f(0, 0, 0), 1);
-        x += 50f * deltaTime;
-        y += 50f * deltaTime;
-
         for(GameObject gameObject : this.gameObjects) {
             gameObject.update(deltaTime);
         }
+
+        DebugDraw.addBox2D(obj1.position, new Vector2f(32, 32), 0.0f, new Vector3f(1, 0, 0));
+        DebugDraw.addBox2D(obj2.position, new Vector2f(32, 32), 0.0f, new Vector3f(0.2f, 0.8f, 0.1f));
+        physics.update(deltaTime);
 
         this.renderer.render();
     }
