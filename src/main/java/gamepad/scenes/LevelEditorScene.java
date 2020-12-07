@@ -52,9 +52,16 @@ public class LevelEditorScene extends Scene {
                         81, 0));
     }
 
+    float x = 0;
+    float y = 0;
+
     @Override
     public void update(float deltaTime) {
         levelEditorComponents.update(deltaTime);
+
+        DebugDraw.addCircle(new Vector2f(x, y), 64, new Vector3f(0, 0, 0), 1);
+        x += 50f * deltaTime;
+        y += 50f * deltaTime;
 
         for(GameObject gameObject : this.gameObjects) {
             gameObject.update(deltaTime);
