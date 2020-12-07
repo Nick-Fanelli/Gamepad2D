@@ -3,9 +3,7 @@ package gamepad.scenes;
 import gamepad.Camera;
 import gamepad.Prefabs;
 import gamepad.object.GameObject;
-import gamepad.object.components.MouseControls;
-import gamepad.object.components.Sprite;
-import gamepad.object.components.Spritesheet;
+import gamepad.object.components.*;
 import gamepad.physics2D.PhysicsSystem2D;
 import gamepad.physics2D.rigidbody.Rigidbody2D;
 import gamepad.renderer.DebugDraw;
@@ -29,7 +27,7 @@ public class LevelEditorScene extends Scene {
     @Override
     public void init() {
         levelEditorComponents.addComponent(new MouseControls());
-//        levelEditorComponents.addComponent(new GridLines());
+        levelEditorComponents.addComponent(new GridLines());
 
 //        obj1 = new Transform(new Vector2f(100, 500));
 //        obj2 = new Transform(new Vector2f(200, 500));
@@ -50,7 +48,9 @@ public class LevelEditorScene extends Scene {
         sprites = AssetPool.getSpritesheet("assets/images/spritesheets/decorationsAndBlocks.png");
 
         if(levelLoaded) {
-//            this.activeGameObject = gameObjects.get(0);
+            if(gameObjects.size() > 0) {
+                this.activeGameObject = gameObjects.get(0);
+            }
             return;
         }
     }
@@ -61,6 +61,15 @@ public class LevelEditorScene extends Scene {
         AssetPool.addSpritesheet("assets/images/spritesheets/decorationsAndBlocks.png",
                 new Spritesheet(AssetPool.getTexture("assets/images/spritesheets/decorationsAndBlocks.png"), 16, 16,
                         81, 0));
+
+        for(GameObject gameObject : gameObjects) {
+            if(gameObject.getComponent(SpriteRenderer.class) != null) {
+                SpriteRenderer spriteRenderer = gameObject.getComponent(SpriteRenderer.class);
+                if(spriteRenderer.getTexture() != null) {
+                    spriteRenderer.setTexture(AssetPool.getTexture(spriteRenderer.getTexture().getFilepath()));
+                }
+            }
+        }
     }
 
 

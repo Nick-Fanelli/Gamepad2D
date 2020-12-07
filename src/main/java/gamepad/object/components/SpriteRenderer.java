@@ -15,18 +15,6 @@ public class SpriteRenderer extends Component {
     private transient boolean shouldRedraw = true;
 
 
-//    public SpriteRenderer(Vector4f color) {
-//        this.color = color;
-//        this.sprite = new Sprite(null);
-//        this.shouldRedraw = true;
-//    }
-//
-//    public SpriteRenderer(Sprite sprite) {
-//        this.sprite = sprite;
-//        this.color = new Vector4f(1, 1, 1, 1);
-//        this.shouldRedraw = true;
-//    }
-
     @Override
     public void start() {
         this.lastTransform = gameObject.transform.copy();
@@ -71,6 +59,10 @@ public class SpriteRenderer extends Component {
             this.color.set(color);
             this.shouldRedraw = true;
         }
+    }
+
+    public void setTexture(Texture texture) {
+        this.sprite.setTexture(texture);
     }
 
 }

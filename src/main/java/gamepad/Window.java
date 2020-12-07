@@ -190,7 +190,7 @@ public class Window {
             glClearColor(r, g, b, 1f);
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-            this.frameBuffer.bind();
+//            this.frameBuffer.bind();
             if(deltaTime >= 0) {
                 DebugDraw.draw();
                 currentScene.update(deltaTime);
