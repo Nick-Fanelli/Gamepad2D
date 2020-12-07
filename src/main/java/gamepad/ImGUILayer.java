@@ -1,5 +1,6 @@
 package gamepad;
 
+import gamepad.editor.GameViewWindow;
 import gamepad.listener.KeyListener;
 import gamepad.listener.MouseListener;
 import gamepad.scenes.Scene;
@@ -187,6 +188,7 @@ public class ImGUILayer {
         this.setupDockSpace();
         currentScene.sceneImgui();
         ImGui.showDemoWindow();
+        GameViewWindow.imgui();
         ImGui.end();
         ImGui.render();
 

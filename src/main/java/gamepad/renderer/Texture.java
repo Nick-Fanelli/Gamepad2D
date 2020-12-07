@@ -26,6 +26,9 @@ public class Texture {
         this.textureID = GL30.glGenTextures();
         GL30.glBindTexture(GL30.GL_TEXTURE_2D, textureID);
 
+        GL30.glTexParameteri(GL30.GL_TEXTURE_2D, GL30.GL_TEXTURE_MIN_FILTER, GL30.GL_LINEAR);
+        GL30.glTexParameteri(GL30.GL_TEXTURE_2D, GL30.GL_TEXTURE_MAG_FILTER, GL30.GL_LINEAR);
+
         GL30.glTexImage2D(GL30.GL_TEXTURE_2D, 0, GL30.GL_RGB, width, height,
                 0, GL30.GL_RGB, GL30.GL_UNSIGNED_BYTE, 0);
     }
