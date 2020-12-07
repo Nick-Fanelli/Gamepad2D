@@ -16,30 +16,32 @@ import imgui.ImVec2;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 
+// ENGINE 32 -> PHYSICS 15
+
 public class LevelEditorScene extends Scene {
 
     private Spritesheet sprites;
     public GameObject levelEditorComponents = new GameObject("Level Editor", new Transform(new Vector2f()), 0);
-    public PhysicsSystem2D physics = new PhysicsSystem2D(1.0f / 60.0f, new Vector2f(0, -10));
-    public Transform obj1, obj2;
-    public Rigidbody2D rb1, rb2;
+//    public PhysicsSystem2D physics = new PhysicsSystem2D(1.0f / 60.0f, new Vector2f(0, -10));
+//    public Transform obj1, obj2;
+//    public Rigidbody2D rb1, rb2;
 
     @Override
     public void init() {
         levelEditorComponents.addComponent(new MouseControls());
 //        levelEditorComponents.addComponent(new GridLines());
 
-        obj1 = new Transform(new Vector2f(100, 500));
-        obj2 = new Transform(new Vector2f(200, 500));
-        rb1 = new Rigidbody2D();
-        rb2 = new Rigidbody2D();
-        rb1.setRawTransform(obj1);
-        rb2.setRawTransform(obj2);
-        rb1.setMass(100.0f);
-        rb2.setMass(200.0f);
-
-        physics.addRigidbody(rb1);
-        physics.addRigidbody(rb2);
+//        obj1 = new Transform(new Vector2f(100, 500));
+//        obj2 = new Transform(new Vector2f(200, 500));
+//        rb1 = new Rigidbody2D();
+//        rb2 = new Rigidbody2D();
+//        rb1.setRawTransform(obj1);
+//        rb2.setRawTransform(obj2);
+//        rb1.setMass(100.0f);
+//        rb2.setMass(200.0f);
+//
+//        physics.addRigidbody(rb1);
+//        physics.addRigidbody(rb2);
 
         loadResources();
 
@@ -69,10 +71,10 @@ public class LevelEditorScene extends Scene {
         for(GameObject gameObject : this.gameObjects) {
             gameObject.update(deltaTime);
         }
-
-        DebugDraw.addBox2D(obj1.position, new Vector2f(32, 32), 0.0f, new Vector3f(1, 0, 0));
-        DebugDraw.addBox2D(obj2.position, new Vector2f(32, 32), 0.0f, new Vector3f(0.2f, 0.8f, 0.1f));
-        physics.update(deltaTime);
+//
+//        DebugDraw.addBox2D(obj1.position, new Vector2f(32, 32), 0.0f, new Vector3f(1, 0, 0));
+//        DebugDraw.addBox2D(obj2.position, new Vector2f(32, 32), 0.0f, new Vector3f(0.2f, 0.8f, 0.1f));
+//        physics.update(deltaTime);
 
         this.renderer.render();
     }

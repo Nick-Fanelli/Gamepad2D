@@ -3,6 +3,7 @@ package gamepad;
 import gamepad.listener.KeyListener;
 import gamepad.listener.MouseListener;
 import gamepad.renderer.DebugDraw;
+import gamepad.renderer.FrameBuffer;
 import gamepad.scenes.LevelEditorScene;
 import gamepad.scenes.LevelScene;
 import gamepad.scenes.Scene;
@@ -32,6 +33,7 @@ public class Window {
 
     private static long glfwWindow;
     private ImGUILayer imGUILayer;
+    private FrameBuffer frameBuffer;
 
     private static Scene currentScene = null;
 
@@ -169,6 +171,8 @@ public class Window {
         this.imGUILayer = new ImGUILayer(glfwWindow);
         this.imGUILayer.initImGui();
 
+        this.frameBuffer = new FrameBuffer(1920, 1080);
+
         Window.changeScene(0);
     }
 
@@ -186,12 +190,14 @@ public class Window {
             glClearColor(r, g, b, 1f);
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+            this.frameBuffer.bind();
             if(deltaTime >= 0) {
                 DebugDraw.draw();
                 currentScene.update(deltaTime);
             }
+            this.frameBuffer.unBind();
 
-//            this.imGUILayer.update(deltaTime, currentScene);
+            this.imGUILayer.update(deltaTime, currentScene);
 
             glfwSwapBuffers(glfwWindow);
 
