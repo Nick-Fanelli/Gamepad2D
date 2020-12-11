@@ -121,7 +121,8 @@ public class ImGUILayer {
                 ImGui.setWindowFocus(null);
             }
 
-            if(!io.getWantCaptureMouse()) MouseListener.mouseButtonCallback(w, button, action, mods);
+            if(!io.getWantCaptureMouse() || !GameViewWindow.getWantCaptureMouse())
+                MouseListener.mouseButtonCallback(w, button, action, mods);
         });
 
         glfwSetScrollCallback(glfwWindow, (w, xOffset, yOffset) -> {

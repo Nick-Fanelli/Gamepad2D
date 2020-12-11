@@ -24,8 +24,6 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 
 public class Window {
 
-    // #30 GE
-
     public final boolean isWindows;
 
     private static Window window = null;
@@ -193,7 +191,7 @@ public class Window {
 
             // Clear Screen
             glClearColor(r, g, b, 1f);
-            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+            glClear(GL_COLOR_BUFFER_BIT);
 
             if(deltaTime >= 0) {
                 DebugDraw.draw();
